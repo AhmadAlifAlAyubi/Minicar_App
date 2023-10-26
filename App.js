@@ -1,8 +1,48 @@
-import React from 'react';
-import {ScrollView, StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity,}from 'react-native';
-import {ShoppingCart} from 'iconsax-react-native';
+import React, {useState} from 'react';
+import {  ScrollView, StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity, StatusBar, FlatList, } from 'react-native';
+import {
+  SearchNormal1, ShoppingCart, Location, BoxTime, DiscountShape, DiscountCircle, Car, Bookmark, More, MenuBoard, Add, Lovely, } from 'iconsax-react-native';
 import {fontType, colors} from './src/theme';
+import {CategoryList} from './data';
+import { ListHorizontal, ItemSmall } from './src/components';
+
+const ItemCategory = ({item, onPress, color}) => {
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <View style={category.item}>
+        <Text style={{...category.title, color}}>{item.categoryName}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+const FlatListCategory = () => {
+  const [selected, setSelected] = useState(1);
+  const renderItem = ({item}) => {
+    const color = item.id === selected ? colors.blue() : colors.grey();
+    return (
+      <ItemCategory
+        item={item}
+        onPress={() => setSelected(item.id)}
+        color={color}
+      />
+    );
+  };
+  return (
+    <FlatList
+      data={CategoryList}
+      keyExtractor={item => item.id}
+      renderItem={item => renderItem({...item})}
+      ItemSeparatorComponent={() => <View style={{width: 10}} />}
+      contentContainerStyle={{paddingHorizontal: 24}}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+    />
+  );
+};
+
 export default function App() {
+  const [choose, setChoose] = useState(1);
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -57,6 +97,7 @@ export default function App() {
             </View>
           </View>
         </View>
+        
         <ListBlog />
       </View>
     </ScrollView>
@@ -105,6 +146,12 @@ const styles = StyleSheet.create({
     fontFamily: fontType['Pjs-ExtraBold'],
     color: colors.black(),
     marginBottom: 1,
+  },
+
+  kategori: {
+    marginHorizontal: 4,
+    color: 'black',
+    fontSize: 10,
   },
 
   imageBanner: {
@@ -195,29 +242,19 @@ const category = StyleSheet.create({
   },
 });
 
+const Status = () => {
+  return <StatusBar translucent backgroundColor={'rgba(0,0,0,0)'}></StatusBar>;
+};
+
 const ListBlog = () => {
+  const [choose, setChoose] = useState(1);
   return (
     <ScrollView>
+      <Status />
       {/* HALAMAN 1 */}
       <View style={styles.listBlog}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View style={{...category.item, marginLeft: 24}}>
-            <Text style={{...category.title, color: colors.blue()}}>
-              Hotwheels
-            </Text>
-          </View>
-          <View style={category.item}>
-            <Text style={category.title}>Matchbox</Text>
-          </View>
-          <View style={category.item}>
-            <Text style={category.title}>Majorette</Text>
-          </View>
-          <View style={category.item}>
-            <Text style={category.title}>Tomica</Text>
-          </View>
-          <View style={{...category.item, marginRight: 24}}>
-            <Text style={category.title}>Mini GT</Text>
-          </View>
+        <FlatListCategory />
         </ScrollView>
         <View style={styles.listCategory}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -340,7 +377,7 @@ const ListBlog = () => {
     </ScrollView>
   );
 };
-// STYLE HALAMAN VERTIKAL
+
 const itemVertical = StyleSheet.create({
   listCard: {
     paddingHorizontal: 50,
