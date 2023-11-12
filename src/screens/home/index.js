@@ -246,10 +246,9 @@ const Status = () => {
 };
 
 const ListBlog = () => {
-  const [choose, setChoose] = useState(1);
   return (
-    <ScrollView>
-      <Status />
+<ScrollView showsVerticalScrollIndicator={false}>
+<Status />
       {/* HALAMAN 1 */}
       <View style={styles.listBlog}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -272,7 +271,7 @@ const ListBlog = () => {
             style={itemVertical.cardImage}
             source={require('../../../src/assets/image/Chevy.png')}
           />
-          <View style={itemVertical.cardContent}>
+          <TouchableOpacity style={itemVertical.cardContent}>
             <View
               style={{
                 flexDirection: 'column',
@@ -286,14 +285,14 @@ const ListBlog = () => {
                 </View>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={itemVertical.cardItem}>
           <Image
             style={itemVertical.cardImage}
             source={require('../../../src/assets/image/Nissan.png')}
           />
-          <View style={itemVertical.cardContent}>
+          <TouchableOpacity style={itemVertical.cardContent}>
             <View
               style={{
                 flexDirection: 'row',
@@ -307,14 +306,14 @@ const ListBlog = () => {
                   style={{flexDirection: 'row', alignItems: 'center'}}></View>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={itemVertical.cardItem}>
           <Image
             style={itemVertical.cardImage}
             source={require('../../../src/assets/image/VW-Polo.png')}
           />
-          <View style={itemVertical.cardContent}>
+          <TouchableOpacity style={itemVertical.cardContent}>
             <View
               style={{
                 flexDirection: 'row',
@@ -328,14 +327,14 @@ const ListBlog = () => {
                   style={{flexDirection: 'row', alignItems: 'center'}}></View>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={itemVertical.cardItem}>
           <Image
             style={itemVertical.cardImage}
             source={require('../../../src/assets/image/Nissan-Fairlady.png')}
           />
-          <View style={itemVertical.cardContent}>
+          <TouchableOpacity style={itemVertical.cardContent}>
             <View
               style={{
                 flexDirection: 'row',
@@ -349,14 +348,14 @@ const ListBlog = () => {
                   style={{flexDirection: 'row', alignItems: 'center'}}></View>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={itemVertical.cardItem}>
           <Image
             style={itemVertical.cardImage}
             source={require('../../../src/assets/image/Nissan-Silvia.png')}
           />
-          <View style={itemVertical.cardContent}>
+          <TouchableOpacity style={itemVertical.cardContent}>
             <View
               style={{
                 flexDirection: 'row',
@@ -370,7 +369,7 @@ const ListBlog = () => {
                   style={{flexDirection: 'row', alignItems: 'center'}}></View>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>

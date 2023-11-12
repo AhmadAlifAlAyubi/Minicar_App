@@ -1,5 +1,10 @@
 import * as React from 'react';
-import {Keranjang} from './src/screens';
+import { NavigationContainer } from '@react-navigation/native';
+import Router from './src/navigation/Router';
 export default function App() {
-  return <Keranjang/>;
+  return (
+    <NavigationContainer>
+     <Router/>
+    </NavigationContainer>
+  );
 }
