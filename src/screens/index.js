@@ -1,5 +1,5 @@
 import Home from "./home";
-import BlogDetail from "./blogdetail";
+import blogdetail from "./blogdetail";
 import Keranjang from "./keranjang";
 import Profile from "./profile";
-export {Home, Keranjang, Profile, BlogDetail}
+export {Home, Keranjang, Profile, blogdetail}

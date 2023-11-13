@@ -1,7 +1,7 @@
 import React from 'react';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Home, Keranjang, Profile, BlogDetail} from '../screens';
+import {Home, Keranjang, Profile, blogdetail} from '../screens';
 import {Home2, ShoppingCart, ProfileCircle} from 'iconsax-react-native'; 
 import { fontType, colors } from '../theme';
 
@@ -82,8 +82,8 @@ const Router = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="BlogDetail"
-        component={BlogDetail}
+        name="blogdetail"
+        component={blogdetail}
         options={{
           headerShown: false, 
           animationEnabled: true,

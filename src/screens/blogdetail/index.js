@@ -5,7 +5,8 @@ import {useNavigation} from '@react-navigation/native';
 import {BlogList} from '../../../data';
 import FastImage from 'react-native-fast-image';
 import { fontType, colors } from '../../theme';
-const BlogDetail = ({route}) => {
+
+const blogdetail = ({route}) => {
   const {blogId} = route.params;
   const selectedBlog = BlogList.find(blog => blog.id === blogId);
   const navigation = useNavigation();
@@ -75,7 +76,7 @@ const BlogDetail = ({route}) => {
     </View>
   );
 };
-export default BlogDetail;
+export default blogdetail;
 const styles = StyleSheet.create({
   container: {
     flex: 1,

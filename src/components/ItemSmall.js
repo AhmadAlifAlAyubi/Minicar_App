@@ -4,12 +4,12 @@ import {Receipt21, Clock, Message} from 'iconsax-react-native';
 import React from 'react';
 import { fontType, colors } from '../theme';
 import {useNavigation} from '@react-navigation/native';
-
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const ItemSmall = ({item}) => {
   const navigation = useNavigation();
   return (
-    <TouchableOpacity style={styles.cardItem} onPress={() => navigation.navigate('BlogDetail', {blogId: item.id})}>
+    <TouchableOpacity style={styles.cardItem} onPress={() => navigation.navigate('blogdetail', {blogId: item.id})}>
       <FastImage
         style={styles.cardImage}
         source={{
@@ -36,14 +36,6 @@ const ItemSmall = ({item}) => {
           />
         </View>
         <View style={styles.cardInfo}>
-          <Clock size={10} variant="Linear" color={colors.grey(0.6)} />
-          <Text style={styles.cardText}>{item.createdAt}</Text>
-          <Message
-            size={10}
-            variant="Linear"
-            color={colors.grey(0.6)}
-          />
-          <Text style={styles.cardText}>{item.totalComments}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -53,46 +45,62 @@ const ItemSmall = ({item}) => {
 export default ItemSmall;
 const styles = StyleSheet.create({
   listCard: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 50,
     paddingVertical: 10,
-    gap: 15,
+    gap: 10,
+    marginHorizontal: 16,
   },
   cardItem: {
-    backgroundColor: colors.blue(0.03),
-    flexDirection: 'row',
+    borderWidth: 5,
+    borderColor: '#FF570C',
+    flexDirection: 'column',
     borderRadius: 10,
   },
   cardCategory: {
-    color: colors.blue(),
+    color: colors.black(),
     fontSize: 10,
     fontFamily: fontType['Pjs-SemiBold'],
+    textAlign: 'justify',
+  },
+  Title: {
+    textAlign: 'justify',
+    color: colors.black(),
+  },
+  TitleNews: {
+    color: colors.black(),
+    fontsize: 30,
+    marginTop: 30,
   },
   cardTitle: {
-    fontSize: 14,
+    fontSize: 25,
     fontFamily: fontType['Pjs-Bold'],
     color: colors.black(),
+    marginTop: 10,
   },
   cardText: {
     fontSize: 10,
     fontFamily: fontType['Pjs-Medium'],
-    color: colors.grey(0.6),
+    color: colors.black(),
   },
   cardImage: {
-    width: 94,
-    height: 94,
+    width: '50%',
+    width: 100,
+    height: 55,
     borderRadius: 10,
     resizeMode: 'cover',
+    marginLeft: 55,
   },
   cardInfo: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     gap: 5,
     alignItems: 'center',
   },
   cardContent: {
     gap: 10,
+    width: 'auto',
     justifyContent: 'space-between',
     paddingRight: 10,
-    paddingLeft: 15,
+    paddingLeft: 10,
     flex: 1,
     paddingVertical: 10,
   },

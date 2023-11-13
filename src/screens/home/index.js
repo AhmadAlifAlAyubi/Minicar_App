@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {  ScrollView, StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity, StatusBar, FlatList, } from 'react-native';
-import {
-  SearchNormal1, ShoppingCart, Location, BoxTime, DiscountShape, DiscountCircle, Car, Bookmark, More, MenuBoard, Add, Lovely, } from 'iconsax-react-native';
+import {SearchNormal1, ShoppingCart, } from 'iconsax-react-native';
   import {BlogList, CategoryList} from '../../../data';
   import { fontType, colors } from '../../theme';
   import { ListHorizontal, ItemSmall } from '../../components';
@@ -246,130 +245,16 @@ const Status = () => {
 };
 
 const ListBlog = () => {
+  // const horizontalData = BlogList.slice(0, 5);
+  const verticalData = BlogList.slice(0,5);
   return (
-<ScrollView showsVerticalScrollIndicator={false}>
-<Status />
-      {/* HALAMAN 1 */}
+    <ScrollView>
       <View style={styles.listBlog}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <FlatListCategory />
-        </ScrollView>
-        <View style={styles.listCategory}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <View style={{...category.item2, marginLeft: 10}}>
-              <Text style={{...category.title2, color: colors.black()}}>
-                Diecast
-              </Text>
-            </View>
-          </ScrollView>
-        </View>
-      </View>
-      {/* HALAMAN 2 */}
-      <View style={itemVertical.listCard}>
-        <View style={itemVertical.cardItem}>
-          <Image
-            style={itemVertical.cardImage}
-            source={require('../../../src/assets/image/Chevy.png')}
-          />
-          <TouchableOpacity style={itemVertical.cardContent}>
-            <View
-              style={{
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-              }}>
-              <View style={{gap: 5, width: '100%'}}>
-                <View style={{flexDirection: 'column', alignItems: 'center'}}>
-                  <Text style={itemVertical.cardTitle}>
-                    Hotwheels 1970 Chevy® Nova™
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={itemVertical.cardItem}>
-          <Image
-            style={itemVertical.cardImage}
-            source={require('../../../src/assets/image/Nissan.png')}
-          />
-          <TouchableOpacity style={itemVertical.cardContent}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}>
-              <View style={{gap: 5, width: '100%'}}>
-                <Text style={itemVertical.cardTitle}>
-                  MINI GT NISSAN LB-SILHOUETTE WORKS GT 35GT-RR
-                </Text>
-                <View
-                  style={{flexDirection: 'row', alignItems: 'center'}}></View>
-              </View>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={itemVertical.cardItem}>
-          <Image
-            style={itemVertical.cardImage}
-            source={require('../../../src/assets/image/VW-Polo.png')}
-          />
-          <TouchableOpacity style={itemVertical.cardContent}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}>
-              <View style={{gap: 5, width: '100%'}}>
-                <Text style={itemVertical.cardTitle}>
-                  Majorette WRC VW Polo
-                </Text>
-                <View
-                  style={{flexDirection: 'row', alignItems: 'center'}}></View>
-              </View>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={itemVertical.cardItem}>
-          <Image
-            style={itemVertical.cardImage}
-            source={require('../../../src/assets/image/Nissan-Fairlady.png')}
-          />
-          <TouchableOpacity style={itemVertical.cardContent}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}>
-              <View style={{gap: 5, width: '100%'}}>
-                <Text style={itemVertical.cardTitle}>
-                  Tomica Nissan Fairlady Z NISMO GT500
-                </Text>
-                <View
-                  style={{flexDirection: 'row', alignItems: 'center'}}></View>
-              </View>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={itemVertical.cardItem}>
-          <Image
-            style={itemVertical.cardImage}
-            source={require('../../../src/assets/image/Nissan-Silvia.png')}
-          />
-          <TouchableOpacity style={itemVertical.cardContent}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}>
-              <View style={{gap: 5, width: '100%'}}>
-                <Text style={itemVertical.cardTitle}>
-                  MINI GT NISSAN LB-SUPER SILHOUETTE S15
-                </Text>
-                <View
-                  style={{flexDirection: 'row', alignItems: 'center'}}></View>
-              </View>
-            </View>
-          </TouchableOpacity>
+        {/* <ListHorizontal data={horizontalData} /> */}
+        <View style={itemVertical.listCard}>
+          {verticalData.map((item, index) => (
+            <ItemSmall item={item} key={index} />
+          ))}
         </View>
       </View>
     </ScrollView>

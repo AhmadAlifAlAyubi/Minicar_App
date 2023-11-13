@@ -21,6 +21,39 @@ export const CategoryList = [
     },
 ];
 
+export const CardList = [
+  {
+    id : 1,
+    title: '1970 Chevy® Nova™',
+    image:
+    'https://images.mattel.net/image/upload/w_720,h_720,q_60,c_pad/shop-us-prod/products/xikzcknuqxbqwhcpbmtl.jpg',
+  },
+  {
+    id : 2,
+    title: 'Nissan LB-Silhouette WORKS GT 35GT-RR™',
+    image:
+    'https://minigt.tsm-models.com/upload/mini_gt/products_gif/product_pic_big/1668114137_546202.JPG',
+  },
+  {
+    id : 3,
+    title: 'WRC VW Polo',
+    image:
+    'https://cdn.simba-dickie-group.de/media_new/shop-majorette/products/212084012Q03/00/detail_zoom_2020/wrc-vw-polo-212084012Q03-en_00.jpeg?v=1648565657',
+  },
+  {
+    id : 4,
+    title: 'WRC VW Polo',
+    image:
+    'https://cdn.simba-dickie-group.de/media_new/shop-majorette/products/212084012Q03/00/detail_zoom_2020/wrc-vw-polo-212084012Q03-en_00.jpeg?v=1648565657',
+  },
+  {
+    id : 5,
+    title: 'Nissan LB-Super Silhouette S15 SILVIA',
+    image:
+    'https://minigt.tsm-models.com/upload/mini_gt/products_gif/product_pic_big/1668113913_545844.JPG',
+  },
+]
+
 export const BlogList = [
   {
     id: 1,

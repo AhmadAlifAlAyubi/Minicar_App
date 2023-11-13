@@ -7,7 +7,7 @@ import {useNavigation} from '@react-navigation/native';
 const ItemHorizontal = ({item, variant, onPress}) => {
   const navigation = useNavigation();
   return (
-    <TouchableOpacity style={itemHorizontal.cardItem} onPress={() => navigation.navigate('BlogDetail', {blogId: item.id})}>
+    <TouchableOpacity style={itemHorizontal.cardItem} onPress={() => navigation.navigate('blogdetail', {blogId: item.id})}>
       <FastImage
         style={itemHorizontal.cardImage}
         source={{
@@ -63,89 +63,16 @@ const ListHorizontal = ({data}) => {
     />
   );
 };
-const itemVertical = StyleSheet.create({
-  listCard: {
-    paddingHorizontal: 50,
-    paddingVertical: 10,
-    gap: 10,
-    marginHorizontal: 16,
-  },
-  cardItem: {
-    borderWidth: 5,
-    borderColor: '#FF570C',
-    flexDirection: 'column',
-    borderRadius: 10,
-  },
-  cardCategory: {
-    color: colors.black(),
-    fontSize: 10,
-    fontFamily: fontType['Pjs-SemiBold'],
-    textAlign: 'justify',
-  },
-  Title: {
-    textAlign: 'justify',
-    color: colors.black(),
-  },
-  TitleNews: {
-    color: colors.black(),
-    fontsize: 30,
-    marginTop: 30,
-  },
-  cardTitle: {
-    fontSize: 25,
-    fontFamily: fontType['Pjs-Bold'],
-    color: colors.black(),
-    marginTop: 10,
-  },
-  cardText: {
-    fontSize: 10,
-    fontFamily: fontType['Pjs-Medium'],
-    color: colors.black(),
-  },
-  cardImage: {
-    width: '50%',
-    width: 100,
-    height: 55,
-    borderRadius: 10,
-    resizeMode: 'cover',
-    marginLeft: 55,
-  },
-  cardInfo: {
-    flexDirection: 'column',
-    gap: 5,
-    alignItems: 'center',
-  },
-  cardContent: {
-    gap: 10,
-    width: 'auto',
-    justifyContent: 'space-between',
-    paddingRight: 10,
-    paddingLeft: 10,
-    flex: 1,
-    paddingVertical: 10,
-  },
-});
-// STYLE HALAMAN HORIZONTAL
+export default ListHorizontal;
 const itemHorizontal = StyleSheet.create({
   cardItem: {
-    width: 65,
-    height: 65,
-    backgroundColor: '#90A4AE',
-    borderRadius: 20,
-    marginHorizontal: 10,
-    paddingLeft: 16,
-    gap: 50,
-    top: 25,
-    bottom: 10,
+    width: 280,
   },
   cardImage: {
-    width: '50%',
-    top: 5,
-    right: 6,
-    height: 50,
-    width: 50,
-    borderRadius: 5,
-    justifyContent: 'center',
+    width: '100%',
+    height: 200,
+    borderRadius: 15,
+    
   },
   cardContent: {
     flexDirection: 'row',
@@ -156,19 +83,12 @@ const itemHorizontal = StyleSheet.create({
     justifyContent: 'flex-end',
     height: '100%',
     gap: 10,
-    paddingLeft: 35,
-    paddingBottom: 70,
-  },
-  Title: {
-    fontSize: 16,
-    color: colors.white(),
-    borderRadius: 25,
+    maxWidth: '60%',
   },
   cardTitle: {
     fontFamily: fontType['Pjs-Bold'],
     fontSize: 14,
-    textAlign: 'center',
-    color: colors.black(),
+    color: colors.white(),
   },
   cardText: {
     fontSize: 10,
