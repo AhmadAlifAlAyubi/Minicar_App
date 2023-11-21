@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {  ScrollView, StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity, StatusBar, FlatList, } from 'react-native';
+import React, {useState,useRef} from 'react';
+import {  ScrollView, StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity, StatusBar, FlatList, Animated} from 'react-native';
 import {SearchNormal1, ShoppingCart, } from 'iconsax-react-native';
   import {BlogList, CategoryList} from '../../../data';
   import { fontType, colors } from '../../theme';
@@ -42,9 +42,16 @@ const FlatListCategory = () => {
 
 export default function Home() {
   const [choose, setChoose] = useState(1);
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const diffClampY = Animated.diffClamp(scrollY, 0, 142);
+  const recentY = diffClampY.interpolate({
+    inputRange: [0, 142],
+    outputRange: [0, -142],
+    extrapolate: 'clamp',
+  });
   return (
-    <ScrollView>
-      <View style={styles.container}>
+    <Animated.ScrollView>
+      <Animated.View style={styles.container}>
         <View style={styles.imageBanner}>
           <View style={styles.header}>
             <View style={styles.titleContainer}>
@@ -97,8 +104,8 @@ export default function Home() {
           </View>
         </View>
         <ListBlog />
-      </View>
-    </ScrollView>
+      </Animated.View>
+    </Animated.ScrollView>
   );
 }
 // Style
@@ -248,7 +255,7 @@ const ListBlog = () => {
   // const horizontalData = BlogList.slice(0, 5);
   const verticalData = BlogList.slice(0,5);
   return (
-    <ScrollView>
+    <Animated.ScrollView>
       <View style={styles.listBlog}>
         {/* <ListHorizontal data={horizontalData} /> */}
         <View style={itemVertical.listCard}>
@@ -257,7 +264,7 @@ const ListBlog = () => {
           ))}
         </View>
       </View>
-    </ScrollView>
+    </Animated.ScrollView>
   );
 };
 
@@ -267,6 +274,7 @@ const itemVertical = StyleSheet.create({
     paddingVertical: 10,
     gap: 10,
     marginHorizontal: 16,
+    marginTop: 10
   },
   cardItem: {
     borderWidth: 5,

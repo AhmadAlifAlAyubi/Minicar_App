@@ -1,5 +1,5 @@
-import {StyleSheet, Text, View, ScrollView, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import {StyleSheet, Text, View, TouchableOpacity, Animated} from 'react-native';
+import React, {useState, useRef} from 'react';
 import {ArrowLeft, Message, Share, More} from 'iconsax-react-native';
 import {useNavigation} from '@react-navigation/native';
 import {BlogList} from '../../../data';
@@ -7,6 +7,12 @@ import FastImage from 'react-native-fast-image';
 import { fontType, colors } from '../../theme';
 
 const blogdetail = ({route}) => {
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const diffClampY = Animated.diffClamp(scrollY, 0, 50);
+  const headerY = diffClampY.interpolate({
+    inputRange: [0, 50],
+    outputRange: [0, -50],
+  });
   const {blogId} = route.params;
   const selectedBlog = BlogList.find(blog => blog.id === blogId);
   const navigation = useNavigation();
@@ -24,7 +30,7 @@ const blogdetail = ({route}) => {
   };
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      <Animated.View style={[styles.header, {transform:[{translateY:headerY}]}]}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <ArrowLeft
             color={colors.grey(0.6)}
@@ -40,9 +46,13 @@ const blogdetail = ({route}) => {
             style={{transform: [{rotate: '90deg'}]}}
           />
         </View>
-      </View>
-      <ScrollView
+      </Animated.View>
+      <Animated.ScrollView
         showsVerticalScrollIndicator={false}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {y: scrollY}}}],
+          {useNativeDriver: true},
+        )}
         contentContainerStyle={{
           paddingHorizontal: 24,
           paddingTop: 62,
@@ -67,12 +77,7 @@ const blogdetail = ({route}) => {
         </View>
         <Text style={styles.title}>{selectedBlog.title}</Text>
         <Text style={styles.content}>{selectedBlog.content}</Text>
-      </ScrollView>
-      {/* <View style={styles.bottomBar}>
-        <View style={{flexDirection:'row', gap:5, alignItems:'center'}}>
-        <Message color={colors.grey(0.6)} variant="Linear" size={24} />
-        </View>
-      </View> */}
+      </Animated.ScrollView>
     </View>
   );
 };
