@@ -4,6 +4,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Home, Keranjang, Profile, blogdetail} from '../screens';
 import {Home2, ShoppingCart, ProfileCircle} from 'iconsax-react-native'; 
 import { fontType, colors } from '../theme';
+import Search from '../screens/search';
+import { AddItem } from '../components';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -86,6 +88,26 @@ const Router = () => {
         component={blogdetail}
         options={{
           headerShown: false, 
+          animationEnabled: true,
+          animationTypeForReplace: 'pop',
+          gestureEnabled: true,
+          gestureDirection : 'horizontal',
+          ...TransitionPresets.SlideFromRightIOS,
+        }}
+      />
+      <Stack.Screen
+        name="SearchPage"
+        component={Search}
+        options={{
+          headerShown: false,
+          presentation: 'transparentModal',
+        }}
+      />
+<Stack.Screen
+        name="AddItem"
+        component={AddItem}
+        options={{
+          headerShown: false,
           animationEnabled: true,
           animationTypeForReplace: 'pop',
           gestureEnabled: true,

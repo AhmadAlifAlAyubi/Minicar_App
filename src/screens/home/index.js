@@ -1,10 +1,10 @@
 import React, {useState,useRef} from 'react';
-import {  ScrollView, StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity, StatusBar, FlatList, Animated} from 'react-native';
+import {  ScrollView, StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity, StatusBar, FlatList, Animated, TouchableWithoutFeedback} from 'react-native';
 import {SearchNormal1, ShoppingCart, } from 'iconsax-react-native';
-  import {BlogList, CategoryList} from '../../../data';
-  import { fontType, colors } from '../../theme';
-  import { ListHorizontal, ItemSmall } from '../../components';
-
+import {BlogList, CategoryList} from '../../../data';
+import { fontType, colors } from '../../theme';
+import { ListHorizontal, ItemSmall } from '../../components';
+import { useNavigation } from "@react-navigation/native";
 const ItemCategory = ({item, onPress, color}) => {
   return (
     <TouchableOpacity onPress={onPress}>
@@ -41,6 +41,7 @@ const FlatListCategory = () => {
 };
 
 export default function Home() {
+  const navigation = useNavigation();
   const [choose, setChoose] = useState(1);
   const scrollY = useRef(new Animated.Value(0)).current;
   const diffClampY = Animated.diffClamp(scrollY, 0, 142);
@@ -103,7 +104,13 @@ export default function Home() {
             </View>
           </View>
         </View>
-        <ListBlog />
+        <TouchableWithoutFeedback onPress={() => navigation.navigate("SearchPage")}>
+          <View style={styles.bar}>
+          <SearchNormal1 size={18} color={colors.white(0.5)} variant="Linear" />
+          <Text style = {itemVertical.placeholder}>Search</Text>
+        </View>
+        </TouchableWithoutFeedback>
+        <ListBlog/>
       </Animated.View>
     </Animated.ScrollView>
   );
@@ -182,6 +189,17 @@ const styles = StyleSheet.create({
   listBlog: {
     paddingTop: 50,
     gap: 10,
+  },
+  bar: {
+    flexDirection: 'row',
+    padding: 15,
+    gap: 10,
+    alignItems: 'center',
+    backgroundColor: colors.darkModeBlack(0.5),
+    borderRadius: 10,
+    marginTop : 75,
+    marginBottom : 1,
+    flex: 1,
   },
 });
 // Style Header
@@ -271,10 +289,11 @@ const ListBlog = () => {
 const itemVertical = StyleSheet.create({
   listCard: {
     paddingHorizontal: 50,
-    paddingVertical: 10,
-    gap: 10,
+    paddingVertical: 1,
+    gap: 1,
     marginHorizontal: 16,
-    marginTop: 10
+    marginVertical : 1,
+    marginTop: 1
   },
   cardItem: {
     borderWidth: 5,
@@ -329,6 +348,12 @@ const itemVertical = StyleSheet.create({
     paddingLeft: 10,
     flex: 1,
     paddingVertical: 10,
+  },
+  placeholder: {
+    fontSize: 14,
+    fontFamily: fontType['Pjs-Medium'],
+    color: colors.white(0.5),
+    lineHeight: 18,
   },
 });
 // STYLE HALAMAN HORIZONTAL

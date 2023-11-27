@@ -3,8 +3,11 @@ import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {ProfileData} from '../../../data';
 import {fontType, colors} from '../../theme';
+import { Setting2, Edit } from "iconsax-react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const Profile = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.imageBanner}>
@@ -63,6 +66,10 @@ const Profile = () => {
       </TouchableOpacity>
       <TouchableOpacity style={styles.imageBanner3}>
         <Text style={profile.konten}>Pengaturan</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.imageBanner3}
+      onPress={() => navigation.navigate('AddItem')}>
+      <Text style={profile.konten}>Tambah Barang</Text>
       </TouchableOpacity>
     </View>
   );
