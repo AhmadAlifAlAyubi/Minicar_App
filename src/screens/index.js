@@ -1,7 +1,8 @@
 import Home from "./home";
-import blogdetail from "./blogdetail";
+import Blogdetail from "./blogdetail";
 import Keranjang from "./keranjang";
 import Profile from "./profile";
 import Search from "./search";
 import AddItem  from "./addItem";
-export {Home, Keranjang, Profile, blogdetail, Search,AddItem}
+import EditBlogForm from "./EditItem";
+export {Home, Keranjang, Profile, Blogdetail, Search,AddItem, EditBlogForm}

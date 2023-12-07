@@ -1,11 +1,12 @@
 import React from 'react';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Home, Keranjang, Profile, blogdetail} from '../screens';
-import {Home2, ShoppingCart, ProfileCircle} from 'iconsax-react-native'; 
-import { fontType, colors } from '../theme';
+import {Home, Keranjang, Profile, EditBlogForm, Blogdetail} from '../screens';
+import {Home2, ShoppingCart, ProfileCircle} from 'iconsax-react-native';
+import {fontType, colors} from '../theme';
 import Search from '../screens/search';
-import { AddItem } from '../components';
+import {AddItem} from '../components';
+import keranjang from '../screens/keranjang';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -44,7 +45,7 @@ function MainApp() {
       />
       <Tab.Screen
         name="Keranjang"
-        component={Keranjang}
+        component={keranjang}
         options={{
           tabBarLabel: 'Keranjang',
           tabBarIcon: ({focused, color}) => (
@@ -85,13 +86,13 @@ const Router = () => {
       />
       <Stack.Screen
         name="blogdetail"
-        component={blogdetail}
+        component={Blogdetail}
         options={{
-          headerShown: false, 
+          headerShown: false,
           animationEnabled: true,
           animationTypeForReplace: 'pop',
           gestureEnabled: true,
-          gestureDirection : 'horizontal',
+          gestureDirection: 'horizontal',
           ...TransitionPresets.SlideFromRightIOS,
         }}
       />
@@ -103,7 +104,7 @@ const Router = () => {
           presentation: 'transparentModal',
         }}
       />
-<Stack.Screen
+      <Stack.Screen
         name="AddItem"
         component={AddItem}
         options={{
@@ -111,7 +112,19 @@ const Router = () => {
           animationEnabled: true,
           animationTypeForReplace: 'pop',
           gestureEnabled: true,
-          gestureDirection : 'horizontal',
+          gestureDirection: 'horizontal',
+          ...TransitionPresets.SlideFromRightIOS,
+        }}
+      />
+      <Stack.Screen
+        name="EditBlog"
+        component={EditBlogForm}
+        options={{
+          headerShown: false,
+          animationEnabled: true,
+          animationTypeForReplace: 'pop',
+          gestureEnabled: true,
+          gestureDirection: 'horizontal',
           ...TransitionPresets.SlideFromRightIOS,
         }}
       />

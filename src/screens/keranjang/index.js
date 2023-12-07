@@ -1,9 +1,43 @@
-import {StyleSheet,Text,View,ScrollView,Image,TouchableOpacity} from 'react-native';
-import {ShoppingCart} from 'iconsax-react-native';
-import React from 'react';
+import {StyleSheet,Text,View,ScrollView,Image,TouchableOpacity,ActivityIndicator} from 'react-native';
+import {ShoppingCart, Edit} from 'iconsax-react-native';
+import React, { useState, useCallback} from 'react';
 import {fontType, colors} from '../../theme';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
+import {formatNumber} from '../../utils/formatNumber';
+import axios from 'axios';
+import { ItemSmall } from '../../components';
 
 const Keranjang = () => {
+ const navigation = useNavigation();
+  const [loading, setLoading] = useState(true);
+  const [blogData, setBlogData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const getDataBlog = async () => {
+    try {
+      const response = await axios.get(
+        'https://656b534bdac3630cf727fdbc.mockapi.io/minicar/minicar',
+      );
+      setBlogData(response.data);
+      console.log(response.data)
+      setLoading(false)
+    } catch (error) {
+        console.error(error);
+    }
+  };
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      getDataBlog()
+      setRefreshing(false);
+    }, 1500);
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      getDataBlog();
+    }, [])
+  );
   return (
     <View style={StyleSheet.container}>
       <View style={{flexDirection: 'row'}}>
@@ -11,88 +45,18 @@ const Keranjang = () => {
         <Text style={styles.text}>Keranjang</Text>
       </View>
       <ScrollView>
-        <View style={itemVertical.listCard}>
-          <View style={itemVertical.cardItem}>
-            <Image
-              style={itemVertical.cardImage}
-              source={require('../../../src/assets/image/Chevy.png')}
-            />
-            <View style={itemVertical.cardContent}>
-              <View
-                style={{
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                }}>
-                <View style={{gap: 5, width: '100%'}}>
-                  <View style={{flexDirection: 'column', alignItems: 'center'}}>
-                    <Text style={itemVertical.cardTitle}>
-                      Hotwheels 1970 Chevy® Nova™
-                    </Text>
-                    <Text style={itemVertical.cardTitle2}>Rp 120.000</Text>
-                  </View>
-                  <TouchableOpacity style={itemVertical.imageBanner}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        fontSize: 15,
-                        color: colors.black(),
-                      }}>
-                      Pilih
-                    </Text>
-                  </TouchableOpacity>
-                  <Image
-                    style={styles.icon}
-                    source={require('../../../src/assets/image/Trash.png')}></Image>
-                </View>
-              </View>
-            </View>
-          </View>
-          <View style={itemVertical.cardItem}>
-            <Image
-              style={itemVertical.cardImage}
-              source={require('../../../src/assets/image/Nissan.png')}
-            />
-            <View style={itemVertical.cardContent}>
-              <View
-                style={{
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                }}>
-                <View style={{gap: 5, width: '100%'}}>
-                  <View style={{flexDirection: 'column', alignItems: 'center'}}>
-                    <Text style={itemVertical.cardTitle}>
-                    MINI GT NISSAN LB-SILHOUETTE WORKS GT 35GT-RR
-                    </Text>
-                    <Text style={itemVertical.cardTitle2}>Rp 320.000</Text>
-                  </View>
-                  <TouchableOpacity style={itemVertical.imageBanner}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        fontSize: 15,
-                        color: colors.black(),
-                      }}>
-                      Pilih
-                    </Text>
-                  </TouchableOpacity>
-                <Image
-                    style={styles.icon}
-                    source={require('../../../src/assets/image/Trash.png')}>
-                </Image>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
       </ScrollView>
-    <TouchableOpacity style={itemVertical.imageBanner2}>
-    <Text style = {{
-        textAlign : 'center',
-        fontSize : 25,
-        color: colors.black(),
-        }}
-        >Beli</Text>
-    </TouchableOpacity>
+      <View style={{paddingVertical: 10, gap: 10}}>
+          {loading ? (
+            <ActivityIndicator size={'large'} color={colors.blue()} />
+          ) : (
+            blogData?.map((item, index) => {
+            return(
+              <ItemSmall item={item} key={index}/>
+            )}
+             )
+          )}
+        </View>
     </View>
   );
 };

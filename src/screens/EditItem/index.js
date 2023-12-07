@@ -1,50 +1,65 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  ActivityIndicator
-} from "react-native";
-import { ArrowLeft } from "iconsax-react-native";
-import { useNavigation } from "@react-navigation/native";
-import { fontType, colors } from "../../theme";
+import React, {useEffect, useState} from 'react';
+import {View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator} from 'react-native';
+import {ArrowLeft} from 'iconsax-react-native';
+import {useNavigation} from '@react-navigation/native';
+import {fontType, colors} from '../../theme';
 import axios from 'axios';
-import ActionSheet from 'react-native-actions-sheet';
 
-const AddItem = () => {
-  const dataCategory = [
-    { id: 1, name: "Hotwheels" },
-    { id: 2, name: "Matchbox" },
-    { id: 3, name: "MiniGT" },
-    { id: 4, name: "Tomica" },
-    { id: 5, name: "Majorette" },
-  ];
-  const [DataItem, setDataItem] = useState({
-    title: "",
-    content: "",
+const EditBlogForm = ({route}) => {
+const {blogId} = route.params;
+const dataCategory = [
+  { id: 1, name: "Hotwheels" },
+  { id: 2, name: "Matchbox" },
+  { id: 3, name: "MiniGT" },
+  { id: 4, name: "Tomica" },
+  { id: 5, name: "Majorette" },
+];
+  const [Dataitem, setDataItem] = useState({
+    title: '',
+    content: '',
     category: {},
   });
   const handleChange = (key, value) => {
     setDataItem({
-      ...DataItem,
+      ...Dataitem,
       [key]: value,
     });
   };
   const [image, setImage] = useState(null);
-  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
-  const handleUpload = async () => {
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    getBlogById();
+  }, [blogId]);
+
+  const getBlogById = async () => {
+    try {
+      const response = await axios.get(
+        `https://656b534bdac3630cf727fdbc.mockapi.io/minicar/minicar/${blogId}`,
+      );
+      setDataItem({
+        title : response.data.title,
+        content : response.data.content,
+        category : {
+            id : response.data.category.id,
+            name : response.data.category.name
+        }
+      })
+    setImage(response.data.image)
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleUpdate = async () => {
     setLoading(true);
     try {
-      await axios.post('https://656b534bdac3630cf727fdbc.mockapi.io/minicar/minicar', {
-          title: DataItem.title,
-          category: DataItem.category,
+      await axios
+        .put(`https://656b534bdac3630cf727fdbc.mockapi.io/minicar/minicar/${blogId}`, {
+          title: Dataitem.title,
+          category: Dataitem.category,
           image,
-          content: DataItem.content,
-          createdAt: new Date(),
+          content: Dataitem.content,
         })
         .then(function (response) {
           console.log(response);
@@ -58,14 +73,15 @@ const AddItem = () => {
       console.log(e);
     }
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <ArrowLeft color={colors.black()} variant="Linear" size={24} />
         </TouchableOpacity>
-        <View style={{ flex: 1, alignItems: "center" }}>
-          <Text style={styles.title}>Tambah Item</Text>
+        <View style={{flex: 1, alignItems: 'center'}}>
+          <Text style={styles.title}>Edit blog</Text>
         </View>
       </View>
       <ScrollView
@@ -73,23 +89,22 @@ const AddItem = () => {
           paddingHorizontal: 24,
           paddingVertical: 10,
           gap: 10,
-        }}
-      >
+        }}>
         <View style={textInput.borderDashed}>
           <TextInput
             placeholder="Title"
-            value={DataItem.title}
-            onChangeText={(text) => handleChange("title", text)}
+            value={Dataitem.title}
+            onChangeText={text => handleChange('title', text)}
             placeholderTextColor={colors.grey(0.6)}
             multiline
             style={textInput.title}
           />
         </View>
-        <View style={[textInput.borderDashed, { minHeight: 250 }]}>
+        <View style={[textInput.borderDashed, {minHeight: 250}]}>
           <TextInput
             placeholder="Content"
-            value={DataItem.content}
-            onChangeText={(text) => handleChange("content", text)}
+            value={Dataitem.content}
+            onChangeText={text => handleChange('content', text)}
             placeholderTextColor={colors.grey(0.6)}
             multiline
             style={textInput.content}
@@ -99,7 +114,7 @@ const AddItem = () => {
           <TextInput
             placeholder="Image"
             value={image}
-            onChangeText={(text) => setImage(text)}
+            onChangeText={text => setImage(text)}
             placeholderTextColor={colors.grey(0.6)}
             style={textInput.content}
           />
@@ -108,31 +123,29 @@ const AddItem = () => {
           <Text
             style={{
               fontSize: 12,
-              fontFamily: fontType["Pjs-Regular"],
+              fontFamily: fontType['Pjs-Regular'],
               color: colors.grey(0.6),
-            }}
-          >
+            }}>
             Category
           </Text>
           <View style={category.container}>
             {dataCategory.map((item, index) => {
               const bgColor =
-                item.id === DataItem.category.id
+                item.id === Dataitem.category.id
                   ? colors.black()
                   : colors.grey(0.08);
               const color =
-                item.id === DataItem.category.id
+                item.id === Dataitem.category.id
                   ? colors.white()
                   : colors.grey();
               return (
                 <TouchableOpacity
                   key={index}
                   onPress={() =>
-                    handleChange("category", { id: item.id, name: item.name })
+                    handleChange('category', {id: item.id, name: item.name})
                   }
-                  style={[category.item, { backgroundColor: bgColor }]}
-                >
-                  <Text style={[category.name, { color: color }]}>
+                  style={[category.item, {backgroundColor: bgColor}]}>
+                  <Text style={[category.name, {color: color}]}>
                     {item.name}
                   </Text>
                 </TouchableOpacity>
@@ -142,9 +155,9 @@ const AddItem = () => {
         </View>
       </ScrollView>
       <View style={styles.bottomBar}>
-      <TouchableOpacity style={styles.button} onPress={handleUpload}>
-          <Text style={styles.buttonLabel}>Upload</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={handleUpdate}>
+          <Text style={styles.buttonLabel}>Update</Text>
+        </TouchableOpacity>
       </View>
       {loading && (
         <View style={styles.loadingOverlay}>
@@ -155,7 +168,7 @@ const AddItem = () => {
   );
 };
 
-export default AddItem;
+export default EditBlogForm;
 
 const styles = StyleSheet.create({
   container: {
@@ -164,21 +177,21 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 24,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     height: 52,
     elevation: 8,
     paddingTop: 8,
     paddingBottom: 4,
   },
   title: {
-    fontFamily: fontType["Pjs-Bold"],
+    fontFamily: fontType['Pjs-Bold'],
     fontSize: 16,
     color: colors.black(),
   },
   bottomBar: {
     backgroundColor: colors.white(),
-    alignItems: "flex-end",
+    alignItems: 'flex-end',
     paddingHorizontal: 24,
     paddingVertical: 10,
     shadowColor: colors.black(),
@@ -196,12 +209,12 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     backgroundColor: colors.blue(),
     borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonLabel: {
     fontSize: 14,
-    fontFamily: fontType["Pjs-SemiBold"],
+    fontFamily: fontType['Pjs-SemiBold'],
     color: colors.white(),
   },
   loadingOverlay: {
@@ -217,7 +230,7 @@ const styles = StyleSheet.create({
 });
 const textInput = StyleSheet.create({
   borderDashed: {
-    borderStyle: "dashed",
+    borderStyle: 'dashed',
     borderWidth: 1,
     borderRadius: 5,
     padding: 10,
@@ -225,13 +238,13 @@ const textInput = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    fontFamily: fontType["Pjs-SemiBold"],
+    fontFamily: fontType['Pjs-SemiBold'],
     color: colors.black(),
     padding: 0,
   },
   content: {
     fontSize: 12,
-    fontFamily: fontType["Pjs-Regular"],
+    fontFamily: fontType['Pjs-Regular'],
     color: colors.black(),
     padding: 0,
   },
@@ -239,12 +252,12 @@ const textInput = StyleSheet.create({
 const category = StyleSheet.create({
   title: {
     fontSize: 12,
-    fontFamily: fontType["Pjs-Regular"],
+    fontFamily: fontType['Pjs-Regular'],
     color: colors.grey(0.6),
   },
   container: {
-    flexWrap: "wrap",
-    flexDirection: "row",
+    flexWrap: 'wrap',
+    flexDirection: 'row',
     gap: 10,
     marginTop: 10,
   },
@@ -255,6 +268,6 @@ const category = StyleSheet.create({
   },
   name: {
     fontSize: 10,
-    fontFamily: fontType["Pjs-Medium"],
+    fontFamily: fontType['Pjs-Medium'],
   },
 });
