@@ -1,43 +1,54 @@
 import {StyleSheet,Text,View,ScrollView,Image,TouchableOpacity,ActivityIndicator} from 'react-native';
 import {ShoppingCart, Edit} from 'iconsax-react-native';
-import React, { useState, useCallback} from 'react';
+import React, { useState, useCallback,useEffect} from 'react';
 import {fontType, colors} from '../../theme';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {formatNumber} from '../../utils/formatNumber';
 import axios from 'axios';
 import { ItemSmall } from '../../components';
+import firestore from '@react-native-firebase/firestore';
 
 const Keranjang = () => {
  const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
   const [blogData, setBlogData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-  const getDataBlog = async () => {
-    try {
-      const response = await axios.get(
-        'https://656b534bdac3630cf727fdbc.mockapi.io/minicar/minicar',
-      );
-      setBlogData(response.data);
-      console.log(response.data)
-      setLoading(false)
-    } catch (error) {
-        console.error(error);
-    }
-  };
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection('minicar')
+      .onSnapshot(querySnapshot => {
+        const blogs = [];
+        querySnapshot.forEach(documentSnapshot => {
+          blogs.push({
+            ...documentSnapshot.data(),
+            id: documentSnapshot.id,
+          });
+        });
+        setBlogData(blogs);
+        setLoading(false);
+      });
+    return () => subscriber();
+  }, []);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
-      getDataBlog()
+      firestore()
+        .collection('minicar')
+        .onSnapshot(querySnapshot => {
+          const blogs = [];
+          querySnapshot.forEach(documentSnapshot => {
+            blogs.push({
+              ...documentSnapshot.data(),
+              id: documentSnapshot.id,
+            });
+          });
+          setBlogData(blogs);
+        });
       setRefreshing(false);
     }, 1500);
   }, []);
 
-  useFocusEffect(
-    useCallback(() => {
-      getDataBlog();
-    }, [])
-  );
   return (
     <View style={StyleSheet.container}>
       <View style={{flexDirection: 'row'}}>

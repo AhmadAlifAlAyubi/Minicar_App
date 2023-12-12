@@ -1,9 +1,9 @@
 import React, {useState,useRef} from 'react';
 import {  ScrollView, StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity, StatusBar, FlatList, Animated, TouchableWithoutFeedback} from 'react-native';
 import {SearchNormal1, ShoppingCart, } from 'iconsax-react-native';
-import {BlogList, CategoryList} from '../../../data';
+import {BlogList, CardList, CategoryList} from '../../../data';
 import { fontType, colors } from '../../theme';
-import { ListHorizontal, ItemSmall } from '../../components';
+import { ListHorizontal, ItemSmall, ItemBeranda } from '../../components';
 import { useNavigation } from "@react-navigation/native";
 const ItemCategory = ({item, onPress, color}) => {
   return (
@@ -277,8 +277,8 @@ const ListBlog = () => {
       <View style={styles.listBlog}>
         {/* <ListHorizontal data={horizontalData} /> */}
         <View style={itemVertical.listCard}>
-          {verticalData.map((item, index) => (
-            <ItemSmall item={item} key={index} />
+          {CardList.map((item, index) => (
+            <ItemBeranda item={item} key={index} />
           ))}
         </View>
       </View>

@@ -5,6 +5,8 @@ import {useNavigation} from '@react-navigation/native';
 import {BlogList} from '../../../data';
 import FastImage from 'react-native-fast-image';
 import { fontType, colors } from '../../theme';
+import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
 import {formatNumber} from '../../utils/formatNumber';
 import {formatDate} from '../../utils/formatDate';
 import axios from 'axios';
@@ -30,36 +32,49 @@ const Blogdetail = ({route}) => {
   };
 
   useEffect(() => {
-    getBlogById();
+    const subscriber = firestore()
+      .collection('minicar')
+      .doc(blogId)
+      .onSnapshot(documentSnapshot => {
+        const blogData = documentSnapshot.data();
+        if (blogData) {
+          console.log('Blog data: ', blogData);
+          setSelectedBlog(blogData);
+        } else {
+          console.log(`Blog with ID ${blogId} not found.`);
+        }
+      });
+    setLoading(false);
+    return () => subscriber();
   }, [blogId]);
-
-  const getBlogById = async () => {
-    try {
-      const response = await axios.get(
-        `https://656b534bdac3630cf727fdbc.mockapi.io/minicar/minicar/${blogId}`,
-      );
-      setSelectedBlog(response.data);
-      console.log(response.data)
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const navigateEdit = () => {
     closeActionSheet()
     navigation.navigate('EditBlog', {blogId})
   }
   const handleDelete = async () => {
-   await axios.delete(`https://656b534bdac3630cf727fdbc.mockapi.io/minicar/minicar/${blogId}`)
-      .then(() => {
-        closeActionSheet()
-        navigation.navigate('Keranjang');
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
+    setLoading(true);
+    try {
+      await firestore()
+        .collection('minicar')
+        .doc(blogId)
+        .delete()
+        .then(() => {
+          console.log('Blog deleted!');
+        });
+      if (selectedBlog?.image) {
+        const imageRef = storage().refFromURL(selectedBlog?.image);
+        await imageRef.delete();
+      }
+      console.log('Blog deleted!');
+      closeActionSheet();
+      setSelectedBlog(null);
+      setLoading(false)
+      navigation.navigate('Keranjang');
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const scrollY = useRef(new Animated.Value(0)).current;
   const diffClampY = Animated.diffClamp(scrollY, 0, 50);
   const headerY = diffClampY.interpolate({
