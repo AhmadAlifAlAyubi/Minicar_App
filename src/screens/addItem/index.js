@@ -8,6 +8,7 @@ import FastImage from 'react-native-fast-image';
 import ImagePicker from 'react-native-image-crop-picker';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 const AddItem = () => {
   const dataCategory = [
@@ -47,6 +48,7 @@ const AddItem = () => {
         image: url,
         content: DataItem.content,
         createdAt: new Date(),
+        authorId
         });
       setLoading(false);
       console.log('Blog Added!');
@@ -69,6 +71,7 @@ const AddItem = () => {
         console.log(error);
       });
   };
+  const authorId = auth().currentUser.uid;
   return (
     <View style={styles.container}>
       <View style={styles.header}>

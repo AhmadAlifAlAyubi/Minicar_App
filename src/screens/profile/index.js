@@ -1,15 +1,40 @@
 import {ScrollView,StyleSheet,Text,View,TouchableOpacity,} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState, useCallback, useRef} from 'react';
 import FastImage from 'react-native-fast-image';
 import {ProfileData} from '../../../data';
 import {fontType, colors} from '../../theme';
 import { Setting2, Edit } from "iconsax-react-native";
 import { useNavigation } from "@react-navigation/native";
-
+import ActionSheet from 'react-native-actions-sheet';
+import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import firestore from '@react-native-firebase/firestore';
 const Profile = () => {
   const navigation = useNavigation();
+  const actionSheetRef = useRef(null);
+  const openActionSheet = () => {
+    actionSheetRef.current?.show();
+  };
+  const closeActionSheet = () => {
+    actionSheetRef.current?.hide();
+  };
+  const handleLogout = async () => {
+    try {
+      closeActionSheet();
+      await auth().signOut();
+      await AsyncStorage.removeItem('userData');
+      navigation.replace('Login');
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <View style={styles.container}>
+       <View style={styles.header}>
+        <TouchableOpacity onPress={openActionSheet}>
+          <Setting2 color={colors.black()} variant="Linear" size={24} />
+        </TouchableOpacity>
+      </View>
       <View style={styles.imageBanner}>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -71,6 +96,50 @@ const Profile = () => {
       onPress={() => navigation.navigate('AddItem')}>
       <Text style={profile.konten}>Tambah Barang</Text>
       </TouchableOpacity>
+      <ActionSheet
+        ref={actionSheetRef}
+        containerStyle={{
+          borderTopLeftRadius: 25,
+          borderTopRightRadius: 25,
+        }}
+        indicatorStyle={{
+          width: 100,
+        }}
+        gestureEnabled={true}
+        defaultOverlayOpacity={0.3}>
+        <TouchableOpacity
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingVertical: 15,
+          }}
+          onPress={handleLogout}>
+          <Text
+            style={{
+              fontFamily: fontType['Pjs-Medium'],
+              color: colors.black(),
+              fontSize: 18,
+            }}>
+            Log out
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingVertical: 15,
+          }}
+          onPress={closeActionSheet}>
+          <Text
+            style={{
+              fontFamily: fontType['Pjs-Medium'],
+              color: 'red',
+              fontSize: 18,
+            }}>
+            Cancel
+          </Text>
+        </TouchableOpacity>
+      </ActionSheet>
     </View>
   );
 };
